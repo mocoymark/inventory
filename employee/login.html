@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      $(document).ready(function () {
+        $('form').submit(function (event) {
+          event.preventDefault()
+          var email = $('#login-email').val()
+          var password = $('#login-password').val()
+          var submit = $('#login-submit').val()
+          $('.form-message').load(
+            'api/login.php',
+            {
+              email: email,
+              password: password,
+              submit: submit,
+            },
+            function (response) {
+              if (response.includes('form-success')) {
+                window.location.href = 'dashboard.html'
+              } else {
+                $('.form-message').html(response)
+              }
+            }
+          )
+        })
+      })
+    </script>
+    <style>
+      form {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        text-align: center;
+        margin: 200px auto;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type='password'],
+      input[type='text'] {
+        color: #555; /* Dark gray text color for input fields */
+      }
+
+      button {
+        background-color: #4caf50; /* Green background color for the button */
+        color: #fff; /* White text color */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s; /* Smooth color transition on hover */
+      }
+
+      button:hover {
+        background-color: #45a049; /* Darker green on hover */
+      }
+
+      p.form-message {
+        color: #f00; /* Red color for form messages */
+      }
+    </style>
+    <form action="login.php" method="post">
+      <input type="text" placeholder="email" name="email" id="login-email" />
+      <input
+        type="password"
+        placeholder="password"
+        name="password"
+        id="login-password"
+      />
+      <button type="submit" name="submit" id="login-submit">Login</button>
+      <p class="form-message"></p>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        height: 100vh;
+        margin-top: 2rem;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        margin: 20px auto;
+      }
+
+      thead {
+        background-color: #4caf50;
+        color: #fff;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      input[type='button'] {
+        padding: 5px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-right: 5px;
+      }
+
+      input[type='button']:hover {
+        background-color: #0056b3;
+      }
+
+      input[type='button'][value='Reject'] {
+        background-color: #dc3545;
+      }
+
+      input[type='button'][value='Reject']:hover {
+        background-color: #c82333;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Admin Dashboard</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Full name</th>
+          <th>Email</th>
+          <th>Phone number</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark Mocoy</td>
+          <td>markmocoycataraja@gmail.com</td>
+          <td>09516314816</td>
+          <td>
+            <input type="button" value="Approve" />
+            <input type="button" value="Reject" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

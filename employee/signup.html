@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      $(document).ready(function () {
+        $('form').submit(function (event) {
+          event.preventDefault()
+          var firstname = $('#sign-firstname').val()
+          var lastname = $('#sign-lastname').val()
+          var email = $('#sign-email').val()
+          var password = $('#sign-password').val()
+          var phonenumber = $('#sign-number').val()
+          var submit = $('#sign-submit').val()
+
+          $('.form-message').load(
+            'api/signup.php',
+            {
+              firstname: firstname,
+              lastname: lastname,
+              email: email,
+              password: password,
+              number: phonenumber,
+              submit: submit,
+            },
+            function (response) {
+              if (response.includes('form-success')) {
+                $('form')[0].reset()
+              }
+            }
+          )
+        })
+      })
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .sign-in {
+        display: inline-block;
+        padding: 10px 20px;
+        width: 87%;
+        text-decoration: none;
+        background-color: #4caf50; /* Green background color */
+        color: #fff; /* White text color */
+        border-radius: 5px; /* Rounded corners */
+        transition: background-color 0.3s; /* Smooth color transition on hover */
+      }
+
+      .sign-in:hover {
+        background-color: #45a049; /* Darker green on hover */
+      }
+      form {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        text-align: center;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      input[type='submit'] {
+        background-color: #4caf50;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      input[type='submit']:hover {
+        background-color: #45a049;
+      }
+
+      p.form-message {
+        color: #f00;
+      }
+    </style>
+    <form action="employee/api/signup.php" method="post">
+      <input
+        type="text"
+        name="firstname"
+        id="sign-firstname"
+        placeholder="firstname"
+      />
+      <input
+        type="text"
+        name="lastname"
+        id="sign-lastname"
+        placeholder="lastname"
+      />
+      <input type="text" name="email" id="sign-email" placeholder="email" />
+      <input
+        type="password"
+        z
+        name="password"
+        id="sign-password"
+        placeholder="password"
+      />
+      <input
+        type="number"
+        name="number"
+        id="sign-number"
+        placeholder="number"
+      />
+      <input type="submit" value="Sign-up" id="sign-submit" />
+      <a href="login.html" class="sign-in">Sign-in</a>
+
+      <p class="form-message"></p>
+    </form>
+  </body>
+</html>
