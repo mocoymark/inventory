@@ -1,11 +1,13 @@
 <?php
 include_once 'dbconfig.php';
-
+$json = array();
 $sql = "SELECT * FROM `usertbl`";
-$result = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result);
-if(mysqli_num_rows($result) == 1){
- echo "Fetch success";
-}
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$result=$stmt->get_result();
 
+while($row=$result->fetch_assoc()){
+ array_push($json, $row);
+}
+echo json_encode($json);
 ?>

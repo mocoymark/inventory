@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -21,6 +23,38 @@
       h1 {
         text-align: center;
         color: #333;
+      }
+      .approveBtn,
+      .rejectBtn {
+        padding: 8px 16px;
+        margin: 4px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        transition-duration: 0.3s;
+      }
+
+      .approveBtn {
+        background-color: #1622c8;
+        color: #fff;
+      }
+
+      .approveBtn:hover {
+        background-color: #020270;
+      }
+
+      .rejectBtn {
+        background-color: #dc3545;
+        color: #fff;
+      }
+
+      .rejectBtn:hover {
+        background-color: #7b030f;
       }
 
       table {
@@ -65,10 +99,31 @@
       input[type='button'][value='Reject']:hover {
         background-color: #c82333;
       }
+      .text-center {
+        align-items: center;
+        text-align: center;
+      }
+      a.add-user {
+        display: inline-block;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      a.add-user:hover {
+        background-color: #0056b3;
+      }
+      tbody tr.rejected {
+        color: red; /* Set the text color to red for rejected rows */
+      }
     </style>
   </head>
   <body>
     <h1>Admin Dashboard</h1>
+    <a href="../employee/signup.html" class="add-user">Add user</a>
     <table>
       <thead>
         <tr>
@@ -77,20 +132,71 @@
           <th>Email</th>
           <th>Phone number</th>
           <th>Status</th>
+          <th class="text-center">Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Mark Mocoy</td>
-          <td>markmocoycataraja@gmail.com</td>
-          <td>09516314816</td>
-          <td>
-            <input type="button" value="Approve" />
-            <input type="button" value="Reject" />
-          </td>
-        </tr>
-      </tbody>
+      <tbody></tbody>
     </table>
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          url: 'api/status.php',
+          type: 'GET',
+          success: function (response) {
+            var data = JSON.parse(response)
+            for (i in data) {
+              $('tbody ').append(
+                '<tr ><td>' +
+                  data[i].id +
+                  '</td>' +
+                  '<td>' +
+                  data[i].firstname +
+                  ' ' +
+                  data[i].lastname +
+                  '</td>' +
+                  '<td>' +
+                  data[i].email +
+                  '</td>' +
+                  '<td>' +
+                  data[i].number +
+                  '</td>' +
+                  '<td>' +
+                  data[i].status +
+                  '</td>' +
+                  '<td>' +
+                  '<button class="approveBtn" data-id="' +
+                  data[i].id +
+                  '">Approve</button>' +
+                  '<button class="rejectBtn" data-id="' +
+                  data[i].id +
+                  '">Reject</button>' +
+                  '</td>' +
+                  '</tr>'
+              )
+            }
+          },
+        })
+      })
+
+      $('table').on('click', '.approveBtn, .rejectBtn', function () {
+        var userId = $(this).data('id')
+        var action = $(this).hasClass('approveBtn') ? 'approve' : 'reject'
+        $.ajax({
+          url: 'api/action.php',
+          type: 'POST',
+          data: { id: userId, action: action },
+          success: function (response) {
+            $.ajax({
+              url: 'api/status.php',
+              type: 'GET',
+              success: function (response) {
+                var data = JSON.parse(response)
+                displayUsers(data)
+              },
+            })
+          },
+        })
+      })
+    </script>
   </body>
 </html>
