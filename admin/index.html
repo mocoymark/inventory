@@ -25,7 +25,8 @@
         color: #333;
       }
       .approveBtn,
-      .rejectBtn {
+      .rejectBtn,
+      .deleteBtn {
         padding: 8px 16px;
         margin: 4px;
         cursor: pointer;
@@ -46,6 +47,14 @@
 
       .approveBtn:hover {
         background-color: #020270;
+      }
+      .deleteBtn {
+        background-color: #620202;
+        color: #fff;
+      }
+
+      .deleteBtn:hover {
+        background-color: #3d1001;
       }
 
       .rejectBtn {
@@ -122,7 +131,7 @@
     </style>
   </head>
   <body>
-    <h1>Admin Dashboard</h1>
+    <h1>Super Admin Dashboard</h1>
     <a href="../employee/signup.html" class="add-user">Add user</a>
     <table>
       <thead>
@@ -170,6 +179,9 @@
                   '<button class="rejectBtn" data-id="' +
                   data[i].id +
                   '">Reject</button>' +
+                  '<button class="deleteBtn" data-id="' +
+                  data[i].id +
+                  '">Delete</button>' +
                   '</td>' +
                   '</tr>'
               )
@@ -178,25 +190,37 @@
         })
       })
 
-      $('table').on('click', '.approveBtn, .rejectBtn', function () {
-        var userId = $(this).data('id')
-        var action = $(this).hasClass('approveBtn') ? 'approve' : 'reject'
-        $.ajax({
-          url: 'api/action.php',
-          type: 'POST',
-          data: { id: userId, action: action },
-          success: function (response) {
-            $.ajax({
-              url: 'api/status.php',
-              type: 'GET',
-              success: function (response) {
-                var data = JSON.parse(response)
-                displayUsers(data)
-              },
-            })
-          },
-        })
-      })
+      $('table').on(
+        'click',
+        '.approveBtn, .rejectBtn, .deleteBtn',
+        function () {
+          var userId = $(this).data('id')
+          var action = ''
+
+          if ($(this).hasClass('approveBtn')) {
+            action = 'approve'
+          } else if ($(this).hasClass('rejectBtn')) {
+            action = 'reject'
+          } else if ($(this).hasClass('deleteBtn')) {
+            action = 'delete'
+          }
+          $.ajax({
+            url: 'api/action.php',
+            type: 'POST',
+            data: { id: userId, action: action },
+            success: function (response) {
+              $.ajax({
+                url: 'api/status.php',
+                type: 'GET',
+                success: function (response) {
+                  var data = JSON.parse(response)
+                  displayUsers(data)
+                },
+              })
+            },
+          })
+        }
+      )
     </script>
   </body>
 </html>
